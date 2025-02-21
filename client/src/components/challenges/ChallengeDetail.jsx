@@ -1,4 +1,3 @@
-// components/challenges/ChallengeDetail.jsx
 import { useState } from 'react';
 import CodeEditor from '../editor/CodeEditor';
 
@@ -49,4 +48,4 @@ const ChallengeDetail = ({ challenge, onSubmit }) => {
   );
 };
 
-export { ChallengeDetail };
+export default ChallengeDetail;

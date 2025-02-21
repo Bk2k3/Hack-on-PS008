@@ -1,4 +1,3 @@
-// services/codeExecutionService.js
 import { VM } from 'vm2';
 
 export const executeCode = async (code, language, testCases) => {
@@ -17,7 +16,6 @@ export const executeCode = async (code, language, testCases) => {
     for (const test of testCases) {
       try {
         let result;
-        
         if (language === 'javascript') {
           const wrappedCode = `
             ${code}
@@ -25,11 +23,9 @@ export const executeCode = async (code, language, testCases) => {
           `;
           result = vm.run(wrappedCode);
         } else if (language === 'python') {
-          // For Python code execution, you'd need to set up a Python interpreter
-          // This is a placeholder - implement actual Python execution
+          // For Python, you would need a proper interpreter; placeholder here
           throw new Error('Python execution not implemented');
         }
-
         results.push({
           passed: JSON.stringify(result) === JSON.stringify(test.expectedOutput),
           input: test.input,

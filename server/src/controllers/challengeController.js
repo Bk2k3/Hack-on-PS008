@@ -1,5 +1,5 @@
-// controllers/challengeController.js
 import Challenge from '../models/Challenge.js';
+import User from '../models/User.js';
 import { executeCode } from '../services/codeExecutionService.js';
 
 export const getChallenges = async (req, res) => {
@@ -42,7 +42,6 @@ export const submitChallenge = async (req, res) => {
       user.completedChallenges.push(challenge._id);
       user.experience += challenge.points;
       
-      // Level up if enough XP
       if (user.experience >= user.level * 1000) {
         user.level += 1;
         user.experience -= (user.level - 1) * 1000;

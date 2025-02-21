@@ -1,4 +1,3 @@
-// components/challenges/ChallengeCard.jsx
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Trophy, ChevronRight } from 'lucide-react';
 
@@ -31,3 +30,5 @@ const ChallengeCard = ({ challenge, onClick }) => {
     </Card>
   );
 };
+
+export default ChallengeCard;

@@ -1,25 +1,22 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Layout from './components/layout/Layout';
+// src/App.jsx
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
-import Challenges from './pages/Challenges';
-import Courses from './pages/Courses';
-
-const queryClient = new QueryClient();
+import Layout from './components/layout/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="challenges" element={<Challenges />} />
-            <Route path="courses" element={<Courses />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 

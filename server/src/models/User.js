@@ -1,23 +1,15 @@
-// server/src/routes/auth.js
-import express from 'express';
-import passport from 'passport';
+import mongoose from 'mongoose';
 
-const router = express.Router();
-
-router.get('/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('/dashboard');
-  }
-);
-
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
+const userSchema = new mongoose.Schema({
+  googleId: String,
+  email: String,
+  username: String,
+  avatar: String,
+  level: { type: Number, default: 1 },
+  experience: { type: Number, default: 0 },
+  completedChallenges: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Challenge' }],
+  currentStreak: { type: Number, default: 0 },
+  lastActive: { type: Date, default: Date.now },
 });
 
-export default router;
+export default mongoose.model('User', userSchema);

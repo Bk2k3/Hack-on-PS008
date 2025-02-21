@@ -1,4 +1,3 @@
-// models/Challenge.js
 import mongoose from 'mongoose';
 
 const testCaseSchema = new mongoose.Schema({
