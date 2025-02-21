@@ -1,61 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// components/challenges/ChallengeDetail.jsx
+import { useState } from 'react';
 import CodeEditor from '../editor/CodeEditor';
 
-const ChallengeDetail = () => {
-  const { id } = useParams();
-  const [challenge, setChallenge] = useState(null);
-  const [code, setCode] = useState('');
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    const fetchChallenge = async () => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/challenges/${id}`);
-      const data = await res.json();
-      setChallenge(data);
-      setCode(data.starterCode || '');
-    };
-    fetchChallenge();
-  }, [id]);
+const ChallengeDetail = ({ challenge, onSubmit }) => {
+  const [code, setCode] = useState(challenge.starterCode);
 
   const handleSubmit = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/challenges/submit`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ challengeId: id, userCode: code }),
-    });
-    const data = await res.json();
-    setResult(data);
+    try {
+      const result = await onSubmit(code);
+      // Handle result
+    } catch (error) {
+      console.error('Error submitting challenge:', error);
+    }
   };
 
-  if (!challenge) return <div>Loading challenge...</div>;
-
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">{challenge.title}</h1>
-      <p className="mb-4">{challenge.description}</p>
-      <div className="mb-4">
-        <CodeEditor code={code} setCode={setCode} language={challenge.language.toLowerCase()} />
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">{challenge.title}</h2>
+        <p className="text-gray-600">{challenge.description}</p>
       </div>
-      <button
-        onClick={handleSubmit}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-      >
-        Submit Code
-      </button>
-      {result && (
-        <div className="mt-4 p-4 border rounded bg-gray-100">
-          <h2 className="font-semibold">Test Results:</h2>
-          {result.map((test, index) => (
-            <div key={index} className="my-1">
-              <span className="font-medium">Test {index + 1}:</span> {test.passed ? 'Passed' : 'Failed'}
-            </div>
+
+      <div className="bg-white rounded-lg p-4 border">
+        <h3 className="font-medium mb-2">Instructions:</h3>
+        <ul className="list-disc list-inside space-y-1 text-gray-600">
+          {challenge.instructions.map((instruction, index) => (
+            <li key={index}>{instruction}</li>
           ))}
-        </div>
-      )}
+        </ul>
+      </div>
+
+      <CodeEditor
+        value={code}
+        onChange={setCode}
+        language={challenge.language}
+        height="400px"
+      />
+
+      <div className="flex justify-end">
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
+          Submit Solution
+        </button>
+      </div>
     </div>
   );
 };
 
-export default ChallengeDetail;
+export { ChallengeDetail };

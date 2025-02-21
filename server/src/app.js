@@ -9,7 +9,13 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your client's URL
+    credentials: true, // Allow credentials (cookies, authorization headers, TLS client certificates)
+  })
+);
+
 app.use(helmet());
 app.use(express.json());
 
