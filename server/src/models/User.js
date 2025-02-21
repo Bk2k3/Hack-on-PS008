@@ -1,15 +1,10 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-  googleId: String,
-  email: String,
-  username: String,
-  avatar: String,
-  level: { type: Number, default: 1 },
-  experience: { type: Number, default: 0 },
-  completedChallenges: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Challenge' }],
-  currentStreak: { type: Number, default: 0 },
-  lastActive: { type: Date, default: Date.now },
+const UserSchema = new mongoose.Schema({
+  googleId: { type: String },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  points: { type: Number, default: 0 }
 });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model('User', UserSchema);

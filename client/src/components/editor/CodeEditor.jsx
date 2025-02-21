@@ -1,5 +1,4 @@
-// components/editor/CodeEditor.jsx
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import Editor from '@monaco-editor/react';
 
 const CodeEditor = ({ value, onChange, language, height }) => {
@@ -26,8 +25,8 @@ const CodeEditor = ({ value, onChange, language, height }) => {
           minimap: { enabled: false },
           fontSize: 14,
           lineNumbers: "on",
-          scrollBeyondLastLine: false,
           automaticLayout: true,
+          scrollBeyondLastLine: false
         }}
       />
     </div>

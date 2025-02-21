@@ -1,61 +1,45 @@
 import Challenge from '../models/Challenge.js';
-import User from '../models/User.js';
 import { executeCode } from '../services/codeExecutionService.js';
 
 export const getChallenges = async (req, res) => {
   try {
-    const challenges = await Challenge.find()
-      .select('title description difficulty points language');
+    const challenges = await Challenge.find();
     res.json(challenges);
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const getChallengeById = async (req, res) => {
-  try {
-    const challenge = await Challenge.findById(req.params.id);
-    if (!challenge) {
-      return res.status(404).json({ error: 'Challenge not found' });
-    }
-    res.json(challenge);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching challenges:', error);
+    res.status(500).json({ error: 'Failed to fetch challenges' });
   }
 };
 
 export const submitChallenge = async (req, res) => {
+  const { code } = req.body;
+  const challengeId = req.params.id;
+  
   try {
-    const { code } = req.body;
-    const challenge = await Challenge.findById(req.params.id);
-    
+    const challenge = await Challenge.findById(challengeId);
     if (!challenge) {
       return res.status(404).json({ error: 'Challenge not found' });
     }
+    
+    const results = await Promise.all(challenge.testCases.map(async (testCase) => {
+      const output = await executeCode(code, testCase.input, challenge.language);
+      const passed = output.trim() === testCase.expectedOutput.trim();
+      return {
+        input: testCase.input,
+        expected: testCase.expectedOutput,
+        actual: output,
+        passed,
+        explanation: testCase.explanation
+      };
+    }));
 
-    const results = await executeCode(code, challenge.language, challenge.testCases);
-    const allTestsPassed = results.every(r => r.passed);
+    const passedCount = results.filter(r => r.passed).length;
+    const totalTests = challenge.testCases.length;
+    const earnedPoints = Math.floor((passedCount / totalTests) * challenge.points);
 
-    if (allTestsPassed) {
-      // Update user progress
-      const user = await User.findById(req.user.id);
-      user.completedChallenges.push(challenge._id);
-      user.experience += challenge.points;
-      
-      if (user.experience >= user.level * 1000) {
-        user.level += 1;
-        user.experience -= (user.level - 1) * 1000;
-      }
-      
-      await user.save();
-    }
-
-    res.json({ 
-      success: allTestsPassed,
-      results,
-      earnedPoints: allTestsPassed ? challenge.points : 0
-    });
+    res.json({ success: passedCount === totalTests, results, earnedPoints });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error in submitChallenge:', error);
+    res.status(500).json({ error: 'Failed to submit challenge' });
   }
 };

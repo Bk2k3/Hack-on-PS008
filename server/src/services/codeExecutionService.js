@@ -1,51 +1,24 @@
 import { VM } from 'vm2';
 
-export const executeCode = async (code, language, testCases) => {
+export const executeCode = async (userCode, testInput, language) => {
   try {
     const vm = new VM({
-      timeout: 3000,
-      sandbox: {
-        console: {
-          log: () => {}, // Suppress console.log in submitted code
-        }
-      }
+      timeout: 1000,
+      sandbox: {}
     });
 
-    const results = [];
-    
-    for (const test of testCases) {
-      try {
-        let result;
-        if (language === 'javascript') {
-          const wrappedCode = `
-            ${code}
-            module.exports = ${test.input}
-          `;
-          result = vm.run(wrappedCode);
-        } else if (language === 'python') {
-          // For Python, you would need a proper interpreter; placeholder here
-          throw new Error('Python execution not implemented');
-        }
-        results.push({
-          passed: JSON.stringify(result) === JSON.stringify(test.expectedOutput),
-          input: test.input,
-          expected: test.expectedOutput,
-          actual: result,
-          error: null
-        });
-      } catch (error) {
-        results.push({
-          passed: false,
-          input: test.input,
-          expected: test.expectedOutput,
-          actual: null,
-          error: error.message
-        });
-      }
-    }
-    
-    return results;
+    // Wrap the user code in an IIFE and return the function named twoSum
+    const wrappedCode = `
+      (function(){
+        ${userCode}
+        return twoSum;
+      })()
+    `;
+    const func = vm.run(wrappedCode);
+    const parameters = eval(testInput);
+    const output = func(...parameters);
+    return JSON.stringify(output);
   } catch (error) {
-    throw new Error(`Code execution failed: ${error.message}`);
+    return error.toString();
   }
 };

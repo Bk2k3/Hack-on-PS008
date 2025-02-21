@@ -9,17 +9,17 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-white shadow-sm h-[calc(100vh-4rem)]">
-      <nav className="mt-5 px-2">
+    <aside className="w-64 bg-white bg-opacity-20 backdrop-blur-md shadow-lg rounded-r-lg border-r border-gray-500 h-[calc(100vh-4rem)] p-4">
+      <nav className="mt-5 flex flex-col space-y-3">
         {links.map((link) => (
           <NavLink
             key={link.to}
             to={link.to}
             className={({ isActive }) =>
-              `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+              `flex items-center px-4 py-3 rounded-lg font-medium transition-all ${
                 isActive
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-yellow-500 text-gray-900 font-bold shadow-lg'
+                  : 'text-white hover:bg-yellow-400 hover:text-gray-900'
               }`
             }
           >

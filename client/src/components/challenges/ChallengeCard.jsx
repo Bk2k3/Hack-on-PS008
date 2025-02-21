@@ -1,4 +1,5 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import React from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Trophy, ChevronRight } from 'lucide-react';
 
 const ChallengeCard = ({ challenge, onClick }) => {
@@ -9,10 +10,7 @@ const ChallengeCard = ({ challenge, onClick }) => {
   };
 
   return (
-    <Card 
-      className="cursor-pointer hover:shadow-lg transition-shadow"
-      onClick={onClick}
-    >
+    <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={onClick}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg">{challenge.title}</CardTitle>
         <Trophy className={`w-5 h-5 ${difficultyColor[challenge.difficulty]}`} />

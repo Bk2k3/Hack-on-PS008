@@ -1,23 +1,27 @@
-// src/App.jsx
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import LoginPage from './pages/LoginPage';
-import Dashboard from './pages/Dashboard';
-import Layout from './components/layout/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import Challenges from './pages/Challenges.jsx';
+import Courses from './pages/Courses.jsx';
+import './App.css';
 
-function App() {
-  return (
+const App = () => (
+  <BrowserRouter>
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/challenges" element={<Challenges />} />
+          <Route path="/courses" element={<Courses />} />
         </Route>
+        <Route path="*" element={<LoginPage />} />
       </Routes>
     </AuthProvider>
-  );
-}
+  </BrowserRouter>
+);
 
 export default App;

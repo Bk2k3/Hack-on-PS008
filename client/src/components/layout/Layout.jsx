@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 
 const Layout = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white">
       <Navbar />
       <div className="flex">
         <Sidebar />
