@@ -17,7 +17,7 @@ const sampleChallenges = [
 }`,
     testCases: [
       {
-        input: "[2,7,11,15], 9",
+        input: "[[2,7,11,15], 9]",
         expectedOutput: "[0,1]",
         explanation: "2 + 7 equals 9."
       }

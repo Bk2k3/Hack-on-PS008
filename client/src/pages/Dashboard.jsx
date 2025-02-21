@@ -5,6 +5,8 @@ import Navbar from '@/components/layout/Navbar';
 import { motion } from 'framer-motion';
 
 const Dashboard = () => {
+  const xpPercentage = 30; // Dynamic XP Progress (You can replace it with real data)
+
   return (
     <div className="bg-gradient-to-r from-blue-900 to-indigo-800 min-h-screen text-white">
       <Navbar />
@@ -29,15 +31,19 @@ const Dashboard = () => {
                 <Trophy className="h-5 w-5 text-white" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">1</div>
-                <div className="text-xs text-gray-100">0 / 1000 XP</div>
-                <div className="w-full h-3 bg-gray-300 rounded-full mt-2">
+                <div className="text-3xl font-bold">2</div>
+                <div className="text-xs text-gray-100">300 / 1000 XP</div>
+                {/* Enhanced XP Progress Bar */}
+                <div className="relative w-full h-3 bg-gray-700 rounded-full mt-2 shadow-inner">
                   <motion.div 
-                    className="h-full bg-white rounded-full" 
-                    style={{ width: `0%` }}
-                    animate={{ width: '10%' }}
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-md"
+                    style={{ width: `${xpPercentage}%` }}
+                    animate={{ width: `${xpPercentage}%` }}
                     transition={{ duration: 1 }}
                   />
+                  <span className="absolute inset-0 flex justify-center items-center text-xs font-bold text-white">
+                    {xpPercentage}% XP
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -50,7 +56,7 @@ const Dashboard = () => {
                 <Code className="h-5 w-5 text-white" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">0</div>
+                <div className="text-3xl font-bold">4</div>
               </CardContent>
             </Card>
           </motion.div>
@@ -62,7 +68,7 @@ const Dashboard = () => {
                 <Brain className="h-5 w-5 text-white" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">🔥 7 days</div>
+                <div className="text-3xl font-bold">🔥 14 days</div>
               </CardContent>
             </Card>
           </motion.div>
@@ -74,30 +80,33 @@ const Dashboard = () => {
                 <Book className="h-5 w-5 text-white" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">📖 3 / 12</div>
+                <div className="text-3xl font-bold">📖 5 / 12</div>
               </CardContent>
             </Card>
           </motion.div>
         </div>
 
-        {/* Leaderboard Section */}
+        {/* Enhanced Leaderboard Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }} 
-          className="mt-12 bg-gray-900 p-6 rounded-xl shadow-xl"
+          className="mt-12 bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-700"
         >
           <h2 className="text-xl font-bold text-center">🏆 Leaderboard</h2>
           <div className="mt-4 flex flex-col space-y-2">
-            <div className="flex justify-between bg-gray-800 p-2 rounded-md">
-              <span>1. Alice</span> <span>1500 XP</span>
-            </div>
-            <div className="flex justify-between bg-gray-800 p-2 rounded-md">
-              <span>2. Bob</span> <span>1200 XP</span>
-            </div>
-            <div className="flex justify-between bg-gray-800 p-2 rounded-md">
-              <span>3. You</span> <span>0 XP</span>
-            </div>
+            <motion.div whileHover={{ scale: 1.02 }} className="flex justify-between bg-gray-800 p-3 rounded-md shadow-md">
+              <span className="text-yellow-400 font-bold">1. Alice</span> 
+              <span className="text-white font-semibold">1500 XP</span>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} className="flex justify-between bg-gray-800 p-3 rounded-md shadow-md">
+              <span className="text-gray-300 font-bold">2. Bob</span> 
+              <span className="text-white font-semibold">1200 XP</span>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} className="flex justify-between bg-gray-800 p-3 rounded-md shadow-md">
+              <span className="text-blue-400 font-bold">3. You</span> 
+              <span className="text-white font-semibold">{xpPercentage * 10} XP</span>
+            </motion.div>
           </div>
         </motion.div>
       </div>

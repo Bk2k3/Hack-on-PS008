@@ -34,13 +34,13 @@ const Challenges = () => {
     }
   };
 
-  if (isLoading) return <div className="p-6 text-center text-lg font-semibold">⏳ Loading challenges...</div>;
-  if (error) return <div className="p-6 text-center text-red-600">⚠️ Error: {error.message}</div>;
+  if (isLoading) return <div className="p-6 text-center text-lg font-semibold text-white">⏳ Loading challenges...</div>;
+  if (error) return <div className="p-6 text-center text-red-400">⚠️ Error: {error.message}</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-700 to-blue-800 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white">
       <Navbar />
-      <div className="p-6 max-w-6xl mx-auto">
+      <div className="p-6 max-w-7xl mx-auto">
         {selectedChallenge ? (
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
@@ -62,7 +62,7 @@ const Challenges = () => {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl font-extrabold mb-6 text-center">🚀 Coding Challenges</h1>
-            <p className="text-center text-gray-200 mb-8">
+            <p className="text-center text-white mb-8">
               Level up by solving challenges and earning XP! 💡
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
